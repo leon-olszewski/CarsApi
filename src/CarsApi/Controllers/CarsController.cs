@@ -70,6 +70,11 @@ namespace CarsApi.Controllers
 
         private Car MapToModel(CarForCreateDto carDto)
         {
+            // This mapping code expects the caller to have completed
+            // validation prior to calling this method. Mapping may
+            // fail if you try to map an invalid DTO. It was done this
+            // way to keep the validation and mapping code separate.
+
             return new Car(
                 make: carDto.Make!,
                 model: carDto.Model!,
