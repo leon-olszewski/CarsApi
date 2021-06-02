@@ -36,17 +36,17 @@ namespace CarsApi.Controllers
                 return BadRequest("Invalid input. " + e.Message);
             }
 
-            var m = MapToModel(carForCreate);
-            var c = _carsRepo.GetCarByVin(m.Vin);
+            var carModelToCreate = MapToModel(carForCreate);
+            var existingCarModel = _carsRepo.GetCarByVin(carModelToCreate.Vin);
 
             IActionResult response;
-            if (c != null)
+            if (existingCarModel != null)
             {
                 response = BadRequest("Car with the given VIN already exists.");
             }
             else
             {
-                _carsRepo.AddCar(m);
+                _carsRepo.AddCar(carModelToCreate);
                 response = NoContent();
             }
 
