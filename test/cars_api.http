@@ -1,0 +1,21 @@
+# Download this VSCode extension to send these requests
+# https://marketplace.visualstudio.com/items?itemName=humao.rest-client
+
+@base = http://localhost:5000
+
+###
+# Get Cars
+GET {{base}}/cars
+
+###
+# Create Car
+POST {{base}}/cars
+Content-Type: application/json
+
+{
+    "Make": "Honda", 
+    "Model": "Civic",
+    "Year": 2018,
+    "Color": "Black",
+    "VehicleIdentificationNumber": "5FNRL384X7B059169"
+}
