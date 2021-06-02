@@ -84,11 +84,11 @@ namespace CarsApi.Controllers
         private Car MapToModel(CarForCreateDto carDto)
         {
             return new Car(
-                carDto.Make!,
-                carDto.Model!,
-                carDto.Year!.Value,
-                carDto.Color!,
-                carDto.VehicleIdentificationNumber!
+                make: carDto.Make!,
+                model: carDto.Model!,
+                year: carDto.Year!.Value,
+                color: carDto.Color!,
+                vin: carDto.VehicleIdentificationNumber!
             );
         }
     }
