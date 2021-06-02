@@ -17,10 +17,10 @@ namespace CarsApi.Data
 
         public IEnumerable<Car> GetAllCars() => _cars;
 
-        public Car GetCar(int id) => _cars
+        public Car? GetCar(int id) => _cars
             .FirstOrDefault(c => c.Id == id);
 
-        public Car GetCarByVin(string vin) => _cars
+        public Car? GetCarByVin(string vin) => _cars
             .FirstOrDefault(c => c.Vin == vin);
     }
 }

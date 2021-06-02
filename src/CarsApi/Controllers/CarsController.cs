@@ -3,7 +3,6 @@ using CarsApi.Dtos;
 using CarsApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 
 namespace CarsApi.Controllers
 {
@@ -22,14 +21,7 @@ namespace CarsApi.Controllers
         public IActionResult GetAllCars()
         {
             var cars = _carsRepo.GetAllCars();
-            if (cars == null)
-            {
-                return Ok(new List<Car>());
-            }
-            else
-            {
-                return Ok(cars);
-            }
+            return Ok(cars);
         }
 
         [HttpPost]
@@ -85,11 +77,11 @@ namespace CarsApi.Controllers
         private Car MapToModel(CarForCreateDto carDto)
         {
             return new Car(
-                carDto.Make,
-                carDto.Model,
-                carDto.Year.Value,
-                carDto.Color,
-                carDto.VehicleIdentificationNumber
+                carDto.Make!,
+                carDto.Model!,
+                carDto.Year!.Value,
+                carDto.Color!,
+                carDto.VehicleIdentificationNumber!
             );
         }
     }
