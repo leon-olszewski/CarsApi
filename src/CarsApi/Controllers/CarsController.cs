@@ -2,7 +2,6 @@
 using CarsApi.Dtos;
 using CarsApi.Models;
 using Microsoft.AspNetCore.Mvc;
-using System;
 
 namespace CarsApi.Controllers
 {
@@ -28,15 +27,10 @@ namespace CarsApi.Controllers
         public IActionResult CreateCar([FromBody] CarForCreateDto carForCreate)
         {
             // Validate the input
-            try
-            {
-                ValidateCarForCreate(carForCreate);
-            }
-            catch (Exception e)
-            {
-                return BadRequest("Invalid input. " + e.Message);
-            }
-          
+            var validationResult = ValidateCarForCreate(carForCreate);
+            if (!validationResult.IsValid)
+                return BadRequest("Invalid input. " + validationResult.ErrorMessage);
+
             // Map the input to a model
             var carModelToCreate = MapToModel(carForCreate);
 
@@ -60,25 +54,27 @@ namespace CarsApi.Controllers
             return response;
         }
 
-        private void ValidateCarForCreate(CarForCreateDto carForCreate)
+        private ValidationResult ValidateCarForCreate(CarForCreateDto carForCreate)
         {
             if (carForCreate.Make == null)
-                throw new Exception("Make must be provided.");
+                return ValidationResult.Invalid("Make must be provided.");
 
             if (carForCreate.Model == null)
-                throw new Exception("Model must be provided.");
+                return ValidationResult.Invalid("Model must be provided.");
 
             if (carForCreate.Year == null)
-                throw new Exception("Year must be provided.");
+                return ValidationResult.Invalid("Year must be provided.");
 
             if (carForCreate.Year <= 0)
-                throw new Exception("Year must be positive.");
+                return ValidationResult.Invalid("Year must be positive.");
 
             if (carForCreate.Color == null)
-                throw new Exception("Color must be provided.");
+                return ValidationResult.Invalid("Color must be provided.");
 
             if (carForCreate.VehicleIdentificationNumber == null)
-                throw new Exception("Vehicle identification number must be provided.");
+                return ValidationResult.Invalid("Vehicle identification number must be provided.");
+
+            return ValidationResult.Valid();
         }
 
         private Car MapToModel(CarForCreateDto carDto)
@@ -90,6 +86,21 @@ namespace CarsApi.Controllers
                 color: carDto.Color!,
                 vin: carDto.VehicleIdentificationNumber!
             );
+        }
+
+        private class ValidationResult
+        {
+            public bool IsValid { get; set; }
+            public string ErrorMessage { get; set; }
+
+            private ValidationResult(bool isValid, string errorMessage)
+            {
+                IsValid = isValid;
+                ErrorMessage = errorMessage;
+            }
+
+            public static ValidationResult Valid() => new ValidationResult(true, string.Empty);
+            public static ValidationResult Invalid(string errorMessage) => new ValidationResult(false, errorMessage);
         }
     }
 }
