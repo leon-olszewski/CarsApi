@@ -7,7 +7,7 @@ namespace CarsApi.Data
     {
         void AddCar(Car car);
         IEnumerable<Car> GetAllCars();
-        Car? GetCar(int id);
-        Car? GetCarByVin(string vin);
+        CarFetchResult GetCar(int id);
+        CarFetchResult GetCarByVin(string vin);
     }
 }

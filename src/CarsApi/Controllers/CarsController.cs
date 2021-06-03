@@ -36,8 +36,8 @@ namespace CarsApi.Controllers
 
             // Check to see if there's already a car with the same
             // VIN in the data store. We don't want duplicates.
-            var existingCarModel = _carsRepo.GetCarByVin(carModelToCreate.Vin);
-            if (existingCarModel != null)
+            var carFetchResult = _carsRepo.GetCarByVin(carModelToCreate.Vin);
+            if (carFetchResult.IsFound)
                 return BadRequest("Car with the given VIN already exists.");
 
             // The input is unique. Proceed with car creation.
